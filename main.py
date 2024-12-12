@@ -1,9 +1,10 @@
-import Window
+from Window import Window
 
 
 def main():
-    Window.create_buttons()
-    Window.window.mainloop()
+    window = Window()
+    window.create_buttons()
+    window.window.mainloop()
 
 
 if __name__ == "__main__":

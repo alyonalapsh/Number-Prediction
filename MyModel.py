@@ -6,8 +6,7 @@ class MyModel(nn.Module):
     Class for training a model.
 
     Attributes:
-        inp (int): length of data vector that input to model.
-        out (int): length of data vector that output from model.
+        model: PyTorch model.
 
     """
 

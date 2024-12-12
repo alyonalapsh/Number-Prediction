@@ -17,12 +17,12 @@ from PIL import Image
 import struct
 from array import array
 
-from class_MyModel import MyModel
+from MyModel import MyModel
 
 
 plt.style.use('dark_background')
 
-MNIST_PATH = '../mnist_data'
+MNIST_PATH = '/your_path/mnist_data'
 
 train_mnist = torchvision.datasets.MNIST(root=MNIST_PATH, train=True, download=True)
 test_minst = torchvision.datasets.MNIST(root=MNIST_PATH, train=False, download=True)
@@ -74,10 +74,12 @@ def write_dataset(labels, data, size, rows, cols, output_dir):
             im.save(output_filename)
 
 
-output_path = '../mnist/'
+output_path = '/your_path/mnist/'
 
-for dataset in ["training", "testing"]:
-    write_dataset(*read(dataset), path.join(output_path, dataset))
+
+def create_dataset():
+    for dataset in ["training", "testing"]:
+        write_dataset(*read(dataset), path.join(output_path, dataset))
 
 
 # transfers calculations to the graphics processor if it is available
@@ -89,8 +91,8 @@ class MNISTDataset(Dataset):
     Class for read and save an image.
 
     Attributes:
-        path (str): path to images.
-        transform (class): by default=None, transforms the data, normalizes it.
+        __path (str): path to images.
+        __transform (class): by default=None, transforms the data, normalizes it.
     """
 
     def __init__(self, path, transform=None):
@@ -101,17 +103,17 @@ class MNISTDataset(Dataset):
             path (str): path to images.
             transform (class): by default=None, transforms the data, normalizes it.
         """
-        self.path = path
-        self.transform = transform
+        self.__path = path
+        self.__transform = transform
 
-        self.len_dataset = 0
-        self.data_list = []  # list that contains tuples - path of file and label
+        self.__len_dataset = 0
+        self.__data_list = []  # list that contains tuples - path of file and label
 
         for path_dir, dir_list, file_list in os.walk(path):
             if path_dir == path:
-                self.classes = sorted(dir_list)
-                self.class_to_idx = {
-                    cls_name: i for i, cls_name in enumerate(self.classes)
+                self.__classes = sorted(dir_list)
+                self.__class_to_idx = {
+                    cls_name: i for i, cls_name in enumerate(self.__classes)
                 }
                 continue
 
@@ -119,9 +121,9 @@ class MNISTDataset(Dataset):
 
             for name_file in file_list:
                 file_path = os.path.join(path_dir, name_file)
-                self.data_list.append((file_path, self.class_to_idx[cls]))
+                self.__data_list.append((file_path, self.__class_to_idx[cls]))
 
-            self.len_dataset += len(file_list)
+            self.__len_dataset += len(file_list)
 
     def __len__(self):
         """
@@ -130,7 +132,7 @@ class MNISTDataset(Dataset):
         Returns:
             int: length of dataset.
         """
-        return self.len_dataset
+        return self.__len_dataset
 
     def __getitem__(self, index):
         """
@@ -142,11 +144,11 @@ class MNISTDataset(Dataset):
         Returns:
             tuple: data and their label.
         """
-        file_path, target = self.data_list[index]
+        file_path, target = self.__data_list[index]
         sample = Image.open(file_path)
 
-        if self.transform is not None:
-            sample = self.transform(sample)
+        if self.__transform is not None:
+            sample = self.__transform(sample)
 
         return sample, target
 
@@ -159,8 +161,8 @@ transform = v2.Compose(
     ]
 )
 
-train_data = MNISTDataset('../mnist/training', transform=transform)
-test_data = MNISTDataset('../mnist/testing', transform=transform)
+train_data = MNISTDataset('/your_path/mnist/training', transform=transform)
+test_data = MNISTDataset('/your_path/mnist/testing', transform=transform)
 
 train_data, val_data = random_split(train_data, [0.7, 0.3])
 
@@ -184,7 +186,7 @@ val_loss = []
 val_acc = []
 
 
-def model_train(EPOCHS=10):
+def model_train(EPOCHS=50):
     """
     Training and validation model.
 
