@@ -3,19 +3,12 @@
 
 Модель обучалась и тестировалась на датасете рукописных образцов написания цифр из базы данных MNIST. Код, по которому обучалась модель, и словарь, состоящий из параметров модели, хранятся в папке model.
 
-В проекте реализован дисплей, который состоит из окна для рисования числа
-
-  <img src="images/empty_window.png" width="200" />
-  
-и трех кнопок:
-
+<img src="images/predict_8.png" width="200" />     <img src="images/predict_7.png" width="200" />     <img src="images/predict_4.png" width="200" />
 * pred - выводит предсказание модели числа, которое нарисовал пользователь;
-  
-  <img src="images/predict_8.png" width="200" /> <img src="images/predict_7.png" width="200" /> <img src="images/predict_4.png" width="200" />
 * clear - очищает окно рисования;
 * close - закрывает программу.
 
-# Installation
+# Установка и запуск
 ```bash
 pip install -r requirements.txt
 python3 main.py
