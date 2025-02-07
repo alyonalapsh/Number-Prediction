@@ -10,7 +10,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 model = MyModel(784, 10).to(device)
 
-load_model = torch.load('/your_path/model/model_state_dict.pt', weights_only=True)
+load_model = torch.load('model/model_state_dict.pt', weights_only=True)
 model.load_state_dict(load_model['state_model'])
 
 
